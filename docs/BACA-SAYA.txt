@@ -1,0 +1,31 @@
+PENGEMBARAAN SI CILIK! - versi 5.0 (percuma, PWA)
+
+DEPLOY KE NETLIFY
+1. Unzip fail ini. Anda akan dapat folder "pengembaraan-si-cilik".
+2. Pergi ke app.netlify.com > Add new site > Deploy manually.
+3. Seret folder "pengembaraan-si-cilik" itu (folder, bukan fail zip) ke kotak yang disediakan.
+4. Selepas siap, Netlify beri alamat https://nama-site.netlify.app. Itulah link game.
+   Service worker (mod offline) hanya berfungsi pada alamat https, bukan bila fail dibuka terus dari komputer.
+
+ADD TO HOME SCREEN
+- Android Chrome: buka link, tekan menu (tiga titik) > "Install app" atau "Add to Home screen".
+- iPhone/iPad Safari: butang Share > "Add to Home Screen".
+- Selepas dimuat sekali dengan internet, game boleh dimain tanpa internet.
+
+KEMAS KINI VERSI BARU
+- Sebelum deploy semula, buka sw.js dan tukar nombor pada CACHE_VERSION (contoh si-cilik-v5.1).
+  Kalau tak tukar, peranti lama mungkin kekal dengan versi lama.
+- Drag folder baru ke Netlify > Deploys > drag untuk deploy versi baru.
+- Kemajuan pemain tidak hilang bila kemas kini (disimpan dalam browser peranti).
+
+MOD UJI
+- Tambah #uji pada hujung link (contoh https://nama-site.netlify.app/#uji) untuk buka semua tahap.
+- Atau: Ibu bapa > Tetapan > Mod uji.
+
+MOD IBU BAPA
+- Pautan "Ibu bapa" di bawah skrin pilih pemain. Perlu jawab satu soalan darab dan tambah.
+- Ringkasan kemajuan, tahap yang boleh diulang, reset/padam pemain, serta simpan dan muat semula kemajuan melalui kod.
+
+NOTA
+- Fon dimuat dari Google Fonts pada kali pertama (perlu internet sekali), kemudian disimpan untuk offline.
+- Kandungan Sains dan English belum disemak guru. Lihat jadual semakan dalam Project.
