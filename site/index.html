@@ -648,7 +648,7 @@ var LEVELS_PER_ZONE = 10;
 var MAX_PLAYERS = 4;
 var STORE_KEY = 'si-cilik-v1';
 var UJI = (location.hash === '#uji');
-var APP_VER = '5.0';
+var APP_VER = '5.1';
 
 var AGES = {
   6:{label:'Prasekolah', world:'kampung'},
@@ -2063,7 +2063,24 @@ function burst(el,count){
     an.onfinish=(function(nd){return function(){nd.remove();};})(s);
   }
 }
-function go(screen){S.screen=screen;if(screen!=='parent'&&screen!=='gate'){S.parentOK=false;S.pconfirm=null;}hush();layer.innerHTML='';render();window.scrollTo(0,0);}
+var DEPTH={players:0,add:1,gate:1,map:1,path:2,parent:2,play:3},hd=0,hIgnore=0;
+function hSync(d){try{if(!history.pushState)return;if(d>hd){history.pushState({d:d},'');hd=d;}else if(d===hd){history.replaceState({d:d},'');}else{var n=hd-d;hd=d;hIgnore++;history.go(-n);}}catch(e){}}
+function backTarget(){var m={add:'players',gate:'players',parent:'players',map:'players',path:'map'};return m[S.screen]||null;}
+window.addEventListener('popstate',function(){
+  if(hIgnore>0){hIgnore--;return;}
+  if(S.screen==='players'||S.screen==='splash'){hd=0;return;}
+  hd=Math.max(0,hd-1);
+  if(S.screen==='play'){
+    try{history.pushState({d:hd+1},'');hd++;}catch(e){}
+    var sh=layer.querySelector('.sheet');
+    if(!sh){var q=document.querySelector('[data-act="quit"]');if(q)q.click();}
+    else if(sh.getAttribute('aria-label')==='Keputusan tahap'){S.run=null;go('path');}
+    else layer.innerHTML='';
+    return;
+  }
+  var t=backTarget();if(t){S.manage=false;S.confirmDel=null;go(t);}
+});
+function go(screen){S.screen=screen;if(DEPTH[screen]!==undefined)hSync(DEPTH[screen]);if(screen!=='parent'&&screen!=='gate'){S.parentOK=false;S.pconfirm=null;}hush();layer.innerHTML='';render();window.scrollTo(0,0);}
 function syncWorld(){
   var sp=inWorld()&&isSpace();document.body.classList.toggle('night',sp);
   if(M.on&&M.space!==sp){stopMusic();setTimeout(startMusic,380);}
@@ -2134,7 +2151,7 @@ function vMap(){
       '<span class="plabel"><b>'+Z.name+'</b><span>'+sub+'</span>'+(st==='open'?'<span class="pst">'+star(true)+zs+' / '+(LEVELS_PER_ZONE*3)+'</span>':'')+'</span></button>';
   }).join('');
   return '<section class="screen" aria-label="Peta">'+
-    '<div class="top"><button class="who" type="button" data-act="toPlayers" aria-label="Tukar pemain"><span class="avatar" style="background:'+p.color+'">'+esc(p.name.charAt(0).toUpperCase())+'</span><span>'+esc(p.name)+'</span></button>'+
+    '<div class="top"><button class="rb" type="button" data-act="toPlayers" aria-label="Kembali ke senarai pemain">'+sym('i-back')+'</button><button class="who" type="button" data-act="toPlayers" aria-label="Tukar pemain"><span class="avatar" style="background:'+p.color+'">'+esc(p.name.charAt(0).toUpperCase())+'</span><span>'+esc(p.name)+'</span></button>'+
     '<div class="grow"></div><div class="starchip">'+star(true)+totalStars(p)+'</div>'+muteBtn()+'</div>'+
     '<div class="world-title"><h1>'+w.name+(UJI?'<span class="uji">Mod uji</span>':'')+'</h1><p>'+w.tag+' · '+p.age+' tahun</p></div>'+
     '<div class="map">'+(night?nightMap():dayMap())+places+'</div></section>';
@@ -2275,7 +2292,7 @@ function vPlay(){
       '<div class="opts '+(q.optsCls||(q.opts.length===2?'two':''))+'">'+q.opts.map(function(o){return '<button class="opt '+(o.cls||'')+'" type="button" data-act="ans" data-v="'+o.v+'">'+o.html+'</button>';}).join('')+'</div>';
   }
   return '<section class="screen play" aria-label="Tahap '+(S.lvl+1)+'">'+
-    '<div class="top"><button class="rb" type="button" data-act="quit" aria-label="Keluar dari tahap">'+sym('i-close')+'</button><div class="grow"><div class="dots" aria-label="Soalan '+(r.i+1)+' daripada '+r.qs.length+'">'+dots+'</div></div>'+muteBtn()+'</div>'+
+    '<div class="top"><button class="rb" type="button" data-act="quit" aria-label="Kembali ke laluan tahap">'+sym('i-back')+'</button><div class="grow"><div class="dots" aria-label="Soalan '+(r.i+1)+' daripada '+r.qs.length+'">'+dots+'</div></div>'+muteBtn()+'</div>'+
     (isSpace()?'<div class="stage space"><span class="console"><i></i><i></i><i></i><b></b></span><span class="deck"></span>':'<div class="stage"><span class="awning"></span><span class="hillband"></span>')+
     '<div class="bubble"><p class="prompt" id="prompt">'+q.prompt+'</p></div>'+
     '<div class="tigerbox">'+guideSVG()+'</div></div>'+
@@ -2450,7 +2467,7 @@ document.addEventListener('submit',function(e){
   var p={id:'p'+Date.now().toString(36),name:name,age:S.newAge,color:color,progress:{}};
   DB.players.push(p);persist();S.pid=p.id;sfx.good();go('map');
 });
-function startLevel(i){S.lvl=i;S.run=buildRun();layer.innerHTML='';S.screen='play';hush();render();window.scrollTo(0,0);}
+function startLevel(i){S.lvl=i;S.run=buildRun();layer.innerHTML='';S.screen='play';hSync(DEPTH.play);hush();render();window.scrollTo(0,0);}
 
 /* ================= BOOT ================= */
 load();
