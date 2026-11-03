@@ -1,6 +1,6 @@
 /* Service worker: Pengembaraan Si Cilik!
    Naikkan nombor CACHE_VERSION setiap kali kau deploy versi baru supaya peranti ambil fail terkini. */
-var CACHE_VERSION = 'si-cilik-v5.3';
+var CACHE_VERSION = 'si-cilik-v5.4';
 var CORE = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png', 'icons/apple-touch-icon.png'];
 
 self.addEventListener('install', function (e) {
