@@ -648,7 +648,7 @@ var LEVELS_PER_ZONE = 10;
 var MAX_PLAYERS = 4;
 var STORE_KEY = 'si-cilik-v1';
 var UJI = (location.hash === '#uji');
-var APP_VER = '5.2';
+var APP_VER = '5.3';
 
 var AGES = {
   6:{label:'Prasekolah', world:'kampung'},
@@ -781,7 +781,7 @@ var G = {
     var f=pick(FK),ms=FRUITS[f].ms,price=pick([10,15,20,25,30,35,40,50,60,70]);
     var g=[],r=price;[50,20,10,5].forEach(function(c){while(r>=c){g.push(c);r-=c;}});
     return {kind:'coins',key:'p'+price+f,price:price,
-      prompt:'Kau nak beli sebiji '+ms+'. Harganya '+price+' sen. Bayar dengan duit yang tepat.',
+      prompt:'Awak nak beli sebiji '+ms+'. Harganya '+price+' sen. Bayar dengan duit yang tepat.',
       visual:'<div class="item"><span class="fr">'+icon(FRUITS[f].icon)+'</span><span class="tag">'+price+' sen</span></div>',
       hints:['Tap syiling sampai jumlah dalam tangan sama dengan harga.','Cuba '+g.map(function(c){return c+' sen';}).join(' + ')+'.'],
       good:'Betul! '+price+' sen, tepat.'};
@@ -856,9 +856,9 @@ var PNEED=[
   {q:'Bunga matahari suka memandang ke arah apa?',yes:'matahari',no:['bulan','batu'],h:'Namanya ada pada bunga itu sendiri.'}
 ];
 var SCEN6=[
-  ['Kau nampak pelangi yang cantik.','mata'],['Kau baca buku cerita.','mata'],['Kau dengar loceng sekolah.','telinga'],['Kau dengar bunyi hujan.','telinga'],
-  ['Kau cium bau bunga.','hidung'],['Kau cium bau kek yang sedap.','hidung'],['Kau rasa manisnya gula.','lidah'],['Kau makan mangga yang masam.','lidah'],
-  ['Kau pegang bola.','tangan'],['Kau angkat beg sekolah.','tangan']
+  ['Awak nampak pelangi yang cantik.','mata'],['Awak baca buku cerita.','mata'],['Awak dengar loceng sekolah.','telinga'],['Awak dengar bunyi hujan.','telinga'],
+  ['Awak cium bau bunga.','hidung'],['Awak cium bau kek yang sedap.','hidung'],['Awak rasa manisnya gula.','lidah'],['Awak makan mangga yang masam.','lidah'],
+  ['Awak pegang bola.','tangan'],['Awak angkat beg sekolah.','tangan']
 ];
 var BODYN={mata:2,telinga:2,hidung:1,lidah:1,tangan:2};
 var DAYQ=[['Bila langit terang?','siang'],['Bila langit gelap?','malam'],['Bila kita biasanya pergi ke sekolah?','siang'],['Bila kita biasanya tidur lena?','malam'],['Bila kita pasang lampu di rumah?','malam'],['Bila matahari bersinar terik?','siang']];
@@ -880,7 +880,7 @@ G.sBody=function(){
   var k=pick(PK),ch=three(k,PK.filter(function(x){return x!==k;})),i=ch.indexOf(k);
   if(Math.random()<0.25){var n=BODYN[k];
     return {key:'bn'+k,prompt:'Berapa '+k+' yang kita ada?',visual:bigpic(PARTS[k].icon),opts:numSet(n,[1,2,3,4]),ans:n,
-      hints:['Pandang badan sendiri dan kira '+k+' kau.','Kita ada '+n+' '+k+'.'],good:'Betul! Kita ada '+n+' '+k+'.'};}
+      hints:['Pandang badan sendiri dan kira '+k+' awak.','Kita ada '+n+' '+k+'.'],good:'Betul! Kita ada '+n+' '+k+'.'};}
   return {key:'bd'+k+ch.join(''),prompt:pick(['Tap '+k+'.','Yang mana '+k+'?','Cari '+k+'.']),visual:'',
     opts:ch.map(function(x){return picOpt(x,PARTS[x].icon);}),ans:k,
     hints:['Kita guna '+k+' '+PARTS[k].use+'.','Gambar '+k+' ada di sebelah '+posWord(i)+'.'],
@@ -888,9 +888,9 @@ G.sBody=function(){
 };
 G.sSense=function(){
   if(Math.random()<0.5){var sc=pick(SCEN6),k2=sc[1],ch2=three(k2,PK.filter(function(x){return x!==k2;}));
-    return {key:'sx'+sc[0]+ch2.join(''),prompt:sc[0]+' Kau guna apa?',visual:'',
+    return {key:'sx'+sc[0]+ch2.join(''),prompt:sc[0]+' Awak guna apa?',visual:'',
       opts:ch2.map(function(x){return picOpt(x,PARTS[x].icon,x);}),ans:k2,
-      hints:['Fikir: anggota badan mana yang membantu kau dalam keadaan ini?','Kau guna '+k2+' '+PARTS[k2].use+'.'],good:'Betul! Kau guna '+k2+'.'};}
+      hints:['Fikir: anggota badan mana yang membantu awak dalam keadaan ini?','Awak guna '+k2+' '+PARTS[k2].use+'.'],good:'Betul! Awak guna '+k2+'.'};}
   var k=pick(PK),ch=three(k,PK.filter(function(x){return x!==k;}));
   return {key:'ss'+k+ch.join(''),prompt:'Kita guna apa untuk '+PARTS[k].verb+'?',visual:'',
     opts:ch.map(function(x){return picOpt(x,PARTS[x].icon,x);}),ans:k,
@@ -1037,10 +1037,10 @@ G.eMissing=function(){
     good:'Betul! Huruf yang hilang ialah '+ans+'.'};
 };
 G.eBigSmall=function(){
-  var f=pick(FK),big=Math.random()<0.5,bigFirst=Math.random()<0.5,ic2=FRUITS[f].icon;
+  var f=pick(FK),big=Math.random()<0.5,bigFirst=Math.random()<0.5,ic2=FRUITS[f].icon,wv=Math.random()<0.5;
   var o=[{v:'besar',cls:'picopt',html:pic(ic2,'',84)},{v:'kecil',cls:'picopt',html:pic(ic2,'',38)}];
   if(!bigFirst)o.reverse();
-  return {key:'bs'+f+big+bigFirst,prompt:'Tap '+FRUITS[f].ms+' yang '+(big?'BESAR (big)':'KECIL (small)')+'.',visual:'',optsCls:'two',
+  return {key:'bs'+f+big+bigFirst+wv,prompt:wv?'Tap '+FRUITS[f].ms+' yang '+(big?'BESAR (big)':'KECIL (small)')+'.':'Mana satu '+FRUITS[f].ms+' yang '+(big?'besar':'kecil')+'?',visual:'',optsCls:'two',
     opts:o,ans:big?'besar':'kecil',
     hints:['Bandingkan saiz kedua-dua gambar.','Pilih yang '+(big?'lebih besar':'lebih kecil')+'.'],
     good:'Betul! Ini yang '+(big?'besar (big).':'kecil (small).')};
@@ -1094,7 +1094,7 @@ G.n7Word=function(){
       hints:['Sebut nombor itu: puluh dahulu, kemudian sa.','Jawapannya ialah "'+msNum(n)+'".'],good:'Betul! '+n+' ialah '+msNum(n)+'.'};
   }
   var c2=shuffle([n].concat(near));
-  return {key:'nw'+n+'a',prompt:'Nombor mana ialah "'+msNum(n)+'"?',visual:'',opts:c2.map(numBtn),ans:n,
+  return {key:'nw'+n+'a',prompt:'Mana satu nombor "'+msNum(n)+'"?',visual:'',opts:c2.map(numBtn),ans:n,
     hints:['Dengar perkataan puluh dahulu, kemudian sa.',msNum(n)+' ialah nombor '+n+'.'],good:'Betul! '+msNum(n)+' ialah '+n+'.'};
 };
 G.n7Place=function(){
@@ -1134,7 +1134,7 @@ G.n7Add=function(){
   var s=a+b,h2;
   if(b<10)h2='Mula dari '+a+', kira '+b+' lagi: '+countOn(a,b,1)+'.';
   else{var bt=b-b%10,bo=b%10,m=a+bt;h2=a+' + '+bt+' = '+m+(bo?', kemudian '+m+' + '+bo+' = '+s:'')+'.';}
-  return {key:a+'+'+b,prompt:'Kira jumlahnya.',visual:eqv(a+' + '+b+' = ?'),opts:optsBig(s).map(numBtn),ans:s,
+  return {key:a+'+'+b,prompt:'Berapa jumlahnya?',visual:eqv(a+' + '+b+' = ?'),opts:optsBig(s).map(numBtn),ans:s,
     hints:[b<10?'Mula dari nombor yang besar, kemudian kira lagi.':'Tambah puluh dahulu, kemudian tambah sa.',h2],good:'Betul! '+a+' + '+b+' = '+s+'.'};
 };
 G.n7Sub=function(){
@@ -1145,7 +1145,7 @@ G.n7Sub=function(){
   var r=a-b,h2;
   if(b<10)h2='Mula dari '+a+', kira menurun '+b+' kali: '+countOn(a,b,-1)+'.';
   else{var bt=b-b%10,bo=b%10,m=a-bt;h2=a+' - '+bt+' = '+m+(bo?', kemudian '+m+' - '+bo+' = '+r:'')+'.';}
-  return {key:a+'-'+b,prompt:'Kira bakinya.',visual:eqv(a+' - '+b+' = ?'),opts:optsBig(r).map(numBtn),ans:r,
+  return {key:a+'-'+b,prompt:'Berapa bakinya?',visual:eqv(a+' - '+b+' = ?'),opts:optsBig(r).map(numBtn),ans:r,
     hints:[b<10?'Mula dari nombor yang besar, kemudian kira menurun.':'Tolak puluh dahulu, kemudian tolak sa.',h2],good:'Betul! '+a+' - '+b+' = '+r+'.'};
 };
 G.m7Count=function(){
@@ -1178,7 +1178,7 @@ G.m7Sum=function(){
   }
   if(form==='change'){
     var p=ri(1,9);
-    return {key:'rc'+f+p,prompt:'Kau beli satu '+mf+'. Kau bayar RM10. Berapa baki?',visual:'<div class="itemrow">'+itemTag(f,'RM'+p)+'<span class="op">−</span>'+noteHTML(10)+'</div>',
+    return {key:'rc'+f+p,prompt:'Awak beli satu '+mf+'. Awak bayar RM10. Berapa baki?',visual:'<div class="itemrow">'+itemTag(f,'RM'+p)+'<span class="op">−</span>'+noteHTML(10)+'</div>',
       opts:rmOpts(10-p),ans:10-p,hints:['Baki ialah wang yang dibayar tolak harga.','RM10 - RM'+p+' = RM'+(10-p)+'.'],good:'Betul! Bakinya RM'+(10-p)+'.'};
   }
   if(form==='senadd'){
@@ -1188,13 +1188,13 @@ G.m7Sum=function(){
   }
   if(form==='senchange'){
     var pr=5*ri(1,19),r=100-pr;
-    return {key:'sc'+f+pr,prompt:'Kau bayar 100 sen (RM1) untuk satu '+mf+'. Berapa baki dalam sen?',visual:'<div class="itemrow">'+itemTag(f,pr+' sen')+'</div>',
+    return {key:'sc'+f+pr,prompt:'Awak bayar 100 sen (RM1) untuk satu '+mf+'. Berapa baki dalam sen?',visual:'<div class="itemrow">'+itemTag(f,pr+' sen')+'</div>',
       opts:senOpts(r),ans:r,hints:['Baki ialah 100 sen tolak harga.','100 - '+pr+' = '+r+' sen.'],good:'Betul! Bakinya '+r+' sen.'};
   }
   var price=ri(2,9),k=Math.floor(price/5),rem=price%5;
   var how=(k?'nota RM5 × '+k:'')+(k&&rem?' dan ':'')+(rem?'nota RM1 × '+rem:'');
   return {kind:'coins',mode:'rm',den:[1,5],key:'rp'+f+price,price:price,
-    prompt:'Kau nak beli '+mf+'. Harganya RM'+price+'. Bayar dengan wang yang tepat.',visual:'<div class="itemrow">'+itemTag(f,'RM'+price)+'</div>',
+    prompt:'Awak nak beli '+mf+'. Harganya RM'+price+'. Bayar dengan wang yang tepat.',visual:'<div class="itemrow">'+itemTag(f,'RM'+price)+'</div>',
     hints:['Guna nota RM5 dahulu jika boleh, kemudian nota RM1.','Cuba: '+how+'.'],good:'Betul! RM'+price+', tepat.'};
 };
 var DAYS=['Ahad','Isnin','Selasa','Rabu','Khamis','Jumaat','Sabtu'];
@@ -1220,7 +1220,7 @@ G.t7Cal=function(){
   var days=Math.random()<0.5,list=days?DAYS:MONTHS,i=ri(0,list.length-1),after=Math.random()<0.5,n=list.length;
   var ans=list[(i+(after?1:n-1))%n],pool=list.filter(function(x){return x!==ans&&x!==list[i];}),s=txtSet(ans,pool);
   var nm2=days?'Hari':'Bulan';
-  return {key:'cal'+days+i+after,prompt:nm2+' '+(after?'selepas ':'sebelum ')+list[i]+' ialah?',visual:'',opts:s.opts,optsCls:s.optsCls,ans:ans,
+  return {key:'cal'+days+i+after,prompt:'Apakah '+nm2.toLowerCase()+' '+(after?'selepas ':'sebelum ')+list[i]+'?',visual:'',opts:s.opts,optsCls:s.optsCls,ans:ans,
     hints:[days?'Susunan hari: '+DAYS.join(', ')+'.':'Susunan bulan: '+MONTHS.join(', ')+'.',nm2+' '+(after?'selepas ':'sebelum ')+list[i]+' ialah '+ans+'.'],good:'Betul! '+ans+'.'};
 };
 G.t7Mix=function(){return Math.random()<0.6?G.t7Clock():G.t7Cal();};
@@ -1236,7 +1236,9 @@ var PARTS7={
 };
 var P7K=Object.keys(PARTS7);
 var TRAIT_YES=['Benda hidup membesar.','Benda hidup bernafas.','Benda hidup memerlukan air dan makanan.','Benda hidup boleh membiak.','Benda hidup memerlukan udara untuk bernafas.','Benda hidup mendapat tenaga daripada makanan.','Benda hidup boleh mati.','Haiwan dan tumbuhan ialah benda hidup.','Anak ayam membesar menjadi ayam.','Benda hidup boleh bergerak atau tumbuh.','Pokok ialah benda hidup.'];
-var TRAIT_NO=['Benda hidup tidak memerlukan makanan.','Benda hidup tidak pernah membesar.','Benda hidup tidak bernafas.','Benda hidup tidak boleh membiak.','Batu boleh membiak.','Batu memerlukan air dan makanan.','Batu boleh bernafas.','Meja boleh membiak.'];
+var TRAIT_YES2=['Haiwan ialah benda hidup.','Bunga ialah benda hidup.','Ikan ialah benda hidup.','Anak kucing membesar menjadi kucing.','Benda hidup perlukan makanan untuk membesar.','Pokok boleh membiak daripada biji benih.'];
+TRAIT_YES=TRAIT_YES.concat(TRAIT_YES2);
+var TRAIT_NO=['Benda hidup tidak memerlukan makanan.','Benda hidup tidak pernah membesar.','Benda hidup tidak bernafas.','Benda hidup tidak boleh membiak.','Batu boleh membiak.','Batu memerlukan air dan makanan.','Batu boleh bernafas.','Meja boleh membiak.','Kerusi boleh bernafas.','Pokok tidak perlukan air.','Batu boleh membesar seperti pokok.','Kucing bukan benda hidup.'];
 var LIVE7=['ayam','kucing','ikan','burung','bunga','pokok','lembu','katak','itik','rama'], DEAD7=['batu','air','bulan','matahari'];
 var NEEDS=[
   {q:'Manusia dan haiwan bernafas menggunakan apa?',yes:'udara',no:['batu','pasir'],h:'Kita tarik dan hembus ini setiap saat.'},
@@ -1246,15 +1248,15 @@ var NEEDS=[
   {q:'Ayam tinggal di ___.',yes:'reban',no:['sarang','rumah'],h:'Tuan kebun membina tempat ini untuk ayam.'},
   {q:'Burung tinggal di ___.',yes:'sarang',no:['reban','kandang'],h:'Burung membuatnya di atas pokok.'},
   {q:'Lembu tinggal di ___.',yes:'kandang',no:['sarang','reban'],h:'Tuan kebun membina tempat ini untuk lembu.'},
-  {q:'Manusia tinggal di ___.',yes:'rumah',no:['sarang','reban'],h:'Kau tidur di tempat ini.'},
+  {q:'Manusia tinggal di ___.',yes:'rumah',no:['sarang','reban'],h:'Awak tidur di tempat ini.'},
   {q:'Itik suka berenang di ___.',yes:'kolam',no:['reban','sarang'],h:'Tempat ini ada air.'},
   {q:'Ikan hidup di dalam ___.',yes:'air',no:['reban','kandang'],h:'Ikan bernafas dalam ini dengan insang.'},
   {q:'Makanan memberi ___ kepada badan kita.',yes:'tenaga',no:['batu','mainan'],h:'Kita rasa bertenaga selepas makan.'},
   {q:'Anak burung tinggal di ___ bersama ibunya.',yes:'sarang',no:['reban','kandang'],h:'Burung membinanya di atas pokok.'}
 ];
 var SCEN=[
-  ['Kau melihat pelangi yang cantik.','mata'],['Kau membaca buku cerita.','mata'],['Kau mendengar bunyi hujan.','telinga'],['Kau mendengar loceng sekolah berbunyi.','telinga'],
-  ['Kau menghidu bau bunga.','hidung'],['Kau merasa manisnya gula.','lidah'],['Kau memegang air yang sejuk.','kulit']
+  ['Awak melihat pelangi yang cantik.','mata'],['Awak membaca buku cerita.','mata'],['Awak mendengar bunyi hujan.','telinga'],['Awak mendengar loceng sekolah berbunyi.','telinga'],
+  ['Awak menghidu bau bunga.','hidung'],['Awak merasa manisnya gula.','lidah'],['Awak memegang air yang sejuk.','kulit']
 ];
 var BODYF={
   paruh:{q:'Haiwan mana ada paruh?',yes:['ayam','burung','itik'],no:['kucing','lembu','ikan','katak']},
@@ -1274,7 +1276,14 @@ var PLANTQ=[
   {q:'Bahagian mana menghantar air ke daun?',yes:'batang',h:'Bahagian ini keras dan tegak.'},
   {q:'Bahagian mana berwarna hijau dan melekat pada ranting?',yes:'daun',h:'Bahagian ini nipis dan rata.'},
   {q:'Bahagian mana tumbuh ke bawah tanah?',yes:'akar',h:'Bahagian ini tidak nampak kerana tertanam.'},
-  {q:'Bahagian mana tempat daun dan bunga melekat?',yes:'batang',h:'Bahagian ini tinggi dan keras.'}
+  {q:'Bahagian mana tempat daun dan bunga melekat?',yes:'batang',h:'Bahagian ini tinggi dan keras.'},
+  {q:'Bahagian mana berwarna-warni dan wangi?',yes:'bunga',h:'Lebah suka bahagian ini.'},
+  {q:'Bahagian mana membawa makanan ke seluruh pokok?',yes:'batang',h:'Bahagian ini keras dan tegak.'},
+  {q:'Bahagian mana menangkap cahaya matahari?',yes:'daun',h:'Bahagian ini hijau dan rata.'},
+  {q:'Bahagian mana ada di bawah tanah?',yes:'akar',h:'Bahagian ini kita tidak nampak.'},
+  {q:'Bahagian mana yang lebah suka hinggap?',yes:'bunga',h:'Lebah mahu madu yang manis.'},
+  {q:'Bahagian mana besar, keras dan tegak di tengah pokok?',yes:'batang',h:'Bahagian ini menegakkan pokok.'},
+  {q:'Bahagian mana yang bertukar menjadi buah?',yes:'bunga',h:'Bahagian ini cantik dan wangi.'}
 ];
 var PLANTP=['akar','batang','daun','bunga'];
 var MAGQ=[
@@ -1286,18 +1295,18 @@ var MAGQ=[
   {q:'Benda mana TIDAK ditarik oleh magnet?',yes:['kayu','plastik','kertas','kain'],no:['paku besi','klip kertas'],h:'Benda ini bukan diperbuat daripada besi.'},
   {q:'Magnet tidak menarik benda yang diperbuat daripada ___.',yes:['kayu','plastik','kain'],no:['besi'],h:'Magnet hanya menarik besi.'}
 ];
-var ABS_YES=['span','tuala','kertas tisu'],ABS_NO=['batu','plastik','kaca'];
+var ABS_YES=['span','tuala','kertas tisu','kain lap','kapas','kertas lap'],ABS_NO=['batu','plastik','kaca','tin','getah','besi'];
 var EARTHQ=[
-  {q:'Tempat yang sangat tinggi dan besar ialah?',yes:'gunung',no:['pantai','sungai','laut']},
-  {q:'Air masin yang sangat luas ialah?',yes:'laut',no:['sungai','gunung','kolam']},
-  {q:'Air tawar yang mengalir panjang ialah?',yes:'sungai',no:['gunung','pantai','bukit']},
-  {q:'Tempat berpasir di tepi laut ialah?',yes:'pantai',no:['gunung','sungai','lembah']},
-  {q:'Tanah yang sesuai untuk tanam sayur ialah?',yes:'tanah kebun',no:['pasir','tanah liat']},
-  {q:'Tanah yang lekat dan boleh dibuat tembikar ialah?',yes:'tanah liat',no:['pasir','tanah kebun']},
-  {q:'Tanah yang kasar dan ada di pantai ialah?',yes:'pasir',no:['tanah liat','tanah kebun']},
-  {q:'Air tawar yang luas dikelilingi tanah ialah?',yes:'tasik',no:['laut','sungai']},
-  {q:'Tempat tinggi yang lebih kecil daripada gunung ialah?',yes:'bukit',no:['laut','pantai']},
-  {q:'Tanah yang licin dan lembap selepas hujan ialah?',yes:'lumpur',no:['pasir','batu']},
+  {q:'Tempat yang sangat tinggi dan besar dipanggil apa?',yes:'gunung',no:['pantai','sungai','laut']},
+  {q:'Air masin yang sangat luas dipanggil apa?',yes:'laut',no:['sungai','gunung','kolam']},
+  {q:'Air tawar yang mengalir panjang dipanggil apa?',yes:'sungai',no:['gunung','pantai','bukit']},
+  {q:'Tempat berpasir di tepi laut dipanggil apa?',yes:'pantai',no:['gunung','sungai','lembah']},
+  {q:'Tanah mana yang sesuai untuk tanam sayur?',yes:'tanah kebun',no:['pasir','tanah liat']},
+  {q:'Tanah yang lekat dan boleh dibuat tembikar dipanggil apa?',yes:'tanah liat',no:['pasir','tanah kebun']},
+  {q:'Tanah yang kasar dan ada di pantai dipanggil apa?',yes:'pasir',no:['tanah liat','tanah kebun']},
+  {q:'Air tawar yang luas dikelilingi tanah dipanggil apa?',yes:'tasik',no:['laut','sungai']},
+  {q:'Tempat tinggi yang lebih kecil daripada gunung dipanggil apa?',yes:'bukit',no:['laut','pantai']},
+  {q:'Tanah yang licin dan lembap selepas hujan dipanggil apa?',yes:'lumpur',no:['pasir','batu']},
   {q:'Air laut rasanya ___.',yes:'masin',no:['manis','masam']},
   {q:'Sungai mengalir dari gunung ke ___.',yes:'laut',no:['bukit','awan']}
 ];
@@ -1325,9 +1334,9 @@ G.s7Sense=function(){
       hints:['Fikir: bahagian tubuh mana yang kita guna '+PARTS7[k].use+'?','Jawapannya ialah '+PARTS7[k].cap+'.'],good:'Betul! Kita guna '+PARTS7[k].cap+' '+PARTS7[k].use+'.'};
   }
   var sc=pick(SCEN),k2=sc[1],ch2=three(k2,P7K.filter(function(x){return x!==k2;}));
-  return {key:'sb'+sc[0]+ch2.join(''),prompt:sc[0]+' Kau guna apa?',visual:'',
+  return {key:'sb'+sc[0]+ch2.join(''),prompt:sc[0]+' Awak guna apa?',visual:'',
     opts:ch2.map(function(x){return picOpt(x,PARTS7[x].icon,PARTS7[x].cap);}),ans:k2,
-    hints:['Deria mana yang membantu kau dalam keadaan ini?','Kau guna '+PARTS7[k2].cap+' '+PARTS7[k2].use+'.'],good:'Betul! Kau guna '+PARTS7[k2].cap+'.'};
+    hints:['Deria mana yang membantu awak dalam keadaan ini?','Awak guna '+PARTS7[k2].cap+' '+PARTS7[k2].use+'.'],good:'Betul! Awak guna '+PARTS7[k2].cap+'.'};
 };
 G.s7Body=function(){
   var key=pick(Object.keys(BODYF)),f=BODYF[key],k=pick(f.yes),ch=three(k,f.no);
@@ -1372,12 +1381,12 @@ var WORDS7=WORDS.concat(CVC.filter(function(c){return !WORDS.some(function(w){re
 var SENTW=['cat','hen','sun','bus','cup','pen','hat','bag','pot','fish','duck','frog','cow','bird','banana','flower','tree','moon','butterfly','leaf','stone','hand','nose'];
 var RHYME={at:['cat','hat','bat','mat','rat'],en:['pen','hen','ten','men'],un:['sun','bun','fun','run'],ug:['bug','mug','hug','jug'],ot:['pot','hot','dot','cot'],ag:['bag','tag','rag','wag'],up:['cup','pup']};
 var CARRY=['cat','hen','cup','pen','hat','bag','pot','fish','duck','frog','bird','banana','flower','leaf','stone'];
-var SENTENCES=['I see a cat.','This is my hat.','I have a red bag.','We can see the sun.','The cup is on the table.','The bag is red.','I like my cat.','We play in the park.','The bird can fly.','It is a big dog.'];
+var SENTENCES=['I see a cat.','This is my hat.','I have a red bag.','We can see the sun.','The cup is on the table.','The bag is red.','I like my cat.','We play in the park.','The bird can fly.','It is a big dog.','The fish can swim.','I like my bag.','We can see the moon.','It is a red hat.','My hen is on the mat.','The pen is in my bag.','I have a big cup.','The frog can jump.'];
 var QSENT=['What is your name','How are you','Where is the cat','Do you like cats'], SSENT=['I see a cat','This is my bag','The sun is hot','We like to run'];
 function wordIcon(w){var o=WORDS7.filter(function(x){return x.w===w;})[0];return o?o.icon:'';}
 G.e7Edge=function(){
   var o=pick(CVC),first=Math.random()<0.5,L=first?o.w.charAt(0):o.w.charAt(2);
-  return {key:'ed'+o.w+first,prompt:'Huruf '+(first?'pertama':'terakhir')+' bagi perkataan "'+o.w+'" ialah?',visual:bigpic(o.icon),
+  return {key:'ed'+o.w+first,prompt:'Apakah huruf '+(first?'pertama':'terakhir')+' perkataan "'+o.w+'"?',visual:bigpic(o.icon),
     opts:letOpts(L,true).map(letBtn),ans:L,
     hints:['Sebut "'+o.w+'" perlahan-lahan: '+o.w.split('').join(' - ')+'.','Huruf '+(first?'pertama':'terakhir')+' ialah '+L+'.'],
     good:'Betul! "'+o.w+'" '+(first?'bermula':'berakhir')+' dengan huruf '+L+'.'};
@@ -1432,7 +1441,7 @@ G.e7Punct=function(){
     while(uniq.length<3){uniq.push(s.replace('.','!'));}
     var ch=shuffle(uniq.slice(0,3));
     if(ch.indexOf(s)<0)ch[0]=s;
-    return {key:'pc'+s+ch.join(''),prompt:'Ayat mana ditulis dengan betul?',visual:'',optsCls:'one',opts:ch.map(txtOpt),ans:s,
+    return {key:'pc'+s+ch.join(''),prompt:'Pilih ayat yang ditulis dengan betul.',visual:'',optsCls:'one',opts:ch.map(txtOpt),ans:s,
       hints:['Ayat bermula dengan huruf besar dan berakhir dengan noktah.','Ayat yang betul ialah "'+s+'"'],good:'Betul! '+s};
   }
   var q=Math.random()<0.5,t=q?pick(QSENT):pick(SSENT),ans=q?'?':'.';
@@ -1464,7 +1473,7 @@ G.n8Word=function(){
   if(toWord) return {key:'w8'+n+'w',prompt:'Pilih perkataan untuk nombor ini.',visual:'<div class="numcard" style="width:170px"><b>'+n+'</b><span>angka</span></div>',optsCls:'one',
     opts:ch.map(function(v){return {v:v,cls:'word',html:'<b>'+msNum8(v)+'</b>'};}),ans:n,
     hints:['Baca ratus dahulu, kemudian puluh, kemudian sa.','Jawapannya: '+msNum8(n)+'.'],good:'Betul! '+n+' ialah '+msNum8(n)+'.'};
-  return {key:'w8'+n+'a',prompt:'Nombor mana ialah "'+msNum8(n)+'"?',visual:'',opts:ch.map(numBtn),ans:n,
+  return {key:'w8'+n+'a',prompt:'Mana satu nombor "'+msNum8(n)+'"?',visual:'',opts:ch.map(numBtn),ans:n,
     hints:['Cari digit ratus dahulu.',msNum8(n)+' = '+n+'.'],good:'Betul! '+msNum8(n)+' ialah '+n+'.'};
 };
 G.n8Place=function(){
@@ -1487,7 +1496,7 @@ G.n8AddSub=function(){
   var bh=Math.floor(b/100)*100,bt=Math.floor(b%100/10)*10,bo=b%10,steps=[],cur=a;
   [bh,bt,bo].forEach(function(x){if(x){var nx=add?cur+x:cur-x;steps.push(cur+(add?' + ':' - ')+x+' = '+nx);cur=nx;}});
   var ch=numSet(r,[r+10,r-10,r+100,r-100,r+1,r-1].filter(function(v){return v>=0&&v<=1000;}));
-  return {key:a+(add?'+':'-')+b,prompt:add?'Kira jumlahnya.':'Kira bakinya.',visual:eqv(a+(add?' + ':' - ')+b+' = ?'),opts:ch,ans:r,
+  return {key:a+(add?'+':'-')+b,prompt:add?'Berapa jumlahnya?':'Berapa bakinya?',visual:eqv(a+(add?' + ':' - ')+b+' = ?'),opts:ch,ans:r,
     hints:['Pecahkan nombor kedua kepada ratus, puluh dan sa.',steps.join(', ')+'.'],good:'Betul! '+a+(add?' + ':' - ')+b+' = '+r+'.'};
 };
 function groupsHTML(g,n){var s='<div class="groups">';for(var i=0;i<g;i++){s+='<span class="grp">';for(var j=0;j<n;j++)s+='<i></i>';s+='</span>';}return s+'</div>';}
@@ -1497,13 +1506,13 @@ G.n8Mul=function(){
   var ch=numSet(r,[r+n,r-n,g+n,r+1,r-1].filter(function(v){return v>0;}));
   var vis=(r<=30?groupsHTML(g,n):'')+eqv(g+' × '+n+' = ?');
   var sk=[];for(var i=1;i<=g;i++)sk.push(n*i);
-  return {key:'m8'+g+'x'+n+word,prompt:word?'Ada '+g+' '+t[0]+'. Setiap '+t[0]+' ada '+n+' '+t[1]+'. Berapa '+t[1]+' semuanya?':'Kira hasil darab.',visual:vis,opts:ch,ans:r,
+  return {key:'m8'+g+'x'+n+word,prompt:word?'Ada '+g+' '+t[0]+'. Setiap '+t[0]+' ada '+n+' '+t[1]+'. Berapa '+t[1]+' semuanya?':'Berapa hasil darab ini?',visual:vis,opts:ch,ans:r,
     hints:['Darab ialah tambah berulang. Kira '+n+', '+g+' kali.','Sifir '+n+': '+sk.join(', ')+'. Jadi '+g+' × '+n+' = '+r+'.'],good:'Betul! '+g+' × '+n+' = '+r+'.'};
 };
 G.n8Div=function(){
   var n=pick([2,3,4,5,10]),q=ri(2,10),a=q*n,word=Math.random()<0.5;
   var ch=numSet(q,[q+1,q-1,q+2,n].filter(function(v){return v>0&&v!==q;}));
-  return {key:'d8'+a+'/'+n+word,prompt:word?a+' bateri dibahagi sama rata kepada '+n+' robot. Setiap robot dapat berapa bateri?':'Kira hasil bahagi.',
+  return {key:'d8'+a+'/'+n+word,prompt:word?a+' bateri dibahagi sama rata kepada '+n+' robot. Setiap robot dapat berapa bateri?':'Berapa hasil bahagi ini?',
     visual:(a<=30&&word?groupsHTML(n,q):'')+eqv(a+' ÷ '+n+' = ?'),opts:ch,ans:q,
     hints:['Fikir sifir '+n+': '+n+' × ? = '+a+'.',n+' × '+q+' = '+a+', jadi '+a+' ÷ '+n+' = '+q+'.'],good:'Betul! '+a+' ÷ '+n+' = '+q+'.'};
 };
@@ -1522,7 +1531,7 @@ G.n8Frac=function(){
   var n=ri(2,10),k=ri(1,n-1),ans2=k+'/'+n;
   var c=[(n-k)+'/'+n,k+'/'+(n-k),(k+1<n?(k+1):k-1)+'/'+n,k+'/'+(n+1),'1/3','2/3','1/4','3/4','2/5'].filter(function(s){var a=s.split('/');return +a[0]>0&&+a[1]>+a[0]&&+a[1]<=10&&s!==ans2;});
   var ch=shuffle(uniq3(ans2,c)).map(fracOpt);
-  if(form==='name') return {key:'fn'+ans2,prompt:'Pecahan mana ialah "'+fracWord(k,n)+'"?',visual:'',opts:ch,ans:ans2,
+  if(form==='name') return {key:'fn'+ans2,prompt:'Mana satu pecahan "'+fracWord(k,n)+'"?',visual:'',opts:ch,ans:ans2,
     hints:['Nombor atas ialah pengangka. Nombor bawah ialah penyebut.',fracWord(k,n)+' ditulis '+k+'/'+n+'.'],good:'Betul! '+fracWord(k,n)+' = '+k+'/'+n+'.'};
   return {key:'fb'+ans2,prompt:'Berapa bahagian yang berwarna?',visual:fbar(k,n),opts:ch,ans:ans2,
     hints:['Kira semua petak untuk penyebut. Kira petak berwarna untuk pengangka.','Ada '+n+' petak, '+k+' berwarna. Jadi '+k+'/'+n+'.'],good:'Betul! '+k+'/'+n+' ('+fracWord(k,n)+').'};
@@ -1541,7 +1550,7 @@ G.n8Dec=function(){
     hints:['Ada 10 petak. Setiap petak ialah 0.1.',k+' petak berwarna = '+k+'/10 = '+ans+'.'],good:'Betul! '+k+'/10 = '+ans+'.'};
   if(form==='frac') return {key:'df'+k,prompt:'Tukar pecahan ini kepada perpuluhan.',visual:'<div class="eq">'+fracH(k,10)+' = ?</div>',opts:ch,ans:ans,
     hints:['Per sepuluh ditulis dengan satu digit selepas titik.',k+'/10 = '+ans+'.'],good:'Betul! '+k+'/10 = '+ans+'.'};
-  return {key:'dw'+k,prompt:'Nombor mana ialah "kosong perpuluhan '+MS_U[k]+'"?',visual:'',opts:ch,ans:ans,
+  return {key:'dw'+k,prompt:'Mana satu nombor "kosong perpuluhan '+MS_U[k]+'"?',visual:'',opts:ch,ans:ans,
     hints:['"Kosong" sebelum titik, "'+MS_U[k]+'" selepas titik.','Jawapannya '+ans+'.'],good:'Betul! '+ans+'.'};
 };
 var SHOP8=[['a-bateri','bateri'],['a-mentol','mentol'],['a-roket','roket mainan'],['a-gear','gear']];
@@ -1577,7 +1586,7 @@ var REL8=[['1 jam','minit',60],['2 jam','minit',120],['3 jam','minit',180],['1 h
 var UNIT8=[
   ['Panjang sebatang pensel diukur dalam ___.','cm',['m','kg']],['Panjang padang bola diukur dalam ___.','m',['cm','ml']],['Tinggi pintu kelas lebih kurang 2 ___.','m',['cm','g']],
   ['Jisim sekampit beras diukur dalam ___.','kg',['g','l']],['Jisim sebiji gula-gula diukur dalam ___.','g',['kg','m']],
-  ['Isi padu air dalam baldi diukur dalam ___.','l',['ml','kg']],['Isi padu ubat dalam sudu diukur dalam ___.','ml',['l','cm']]
+  ['Isi padu air dalam baldi diukur dalam ___.','l',['ml','kg']],['Ubat dalam sudu diukur dalam ___.','ml',['l','cm']]
 ];
 var CONV8=[['1 m','cm',100],['2 m','cm',200],['1 kg','g',1000],['1 l','ml',1000],['2 kg','g',2000],['2 l','ml',2000]];
 G.t8Mix=function(){
@@ -1603,10 +1612,18 @@ function tq(id,q,ans,wrong,h1,h2,good,vis){
 }
 var GROW=['bayi','kanak-kanak','remaja','dewasa','warga emas'];
 var HUM8=[
-  ['Apakah yang berubah apabila kita membesar?',['tinggi badan','berat badan','saiz kaki'],['bilangan jari','warna mata','bilangan telinga'],'Fikir: apa yang bertambah sejak kau bayi?'],
+  ['Apakah yang berubah apabila kita membesar?',['tinggi badan','berat badan','saiz kaki'],['bilangan jari','warna mata','bilangan telinga'],'Fikir: apa yang bertambah sejak awak bayi?'],
   ['Ciri mana yang diwarisi daripada ibu bapa?',['bentuk rambut','warna mata','bentuk hidung'],['parut di lutut','rambut yang dipotong pendek','baju kegemaran'],'Ciri warisan ada sejak lahir, bukan sesuatu yang kita buat.'],
   ['Manusia membiak dengan cara ___.',['beranak'],['bertelur','bertunas'],'Ibu melahirkan bayi.']
 ];
+HUM8.push(
+  ['Apakah yang TIDAK berubah apabila kita membesar?',['bilangan jari','bilangan telinga'],['tinggi badan','berat badan','saiz kaki'],'Fikir bahagian badan yang tidak bertambah.'],
+  ['Bayi lahir daripada ___.',['perut ibu'],['telur','tunas'],'Ibu melahirkan bayi.'],
+  ['Apa yang kita perlukan supaya membesar sihat?',['makanan sihat','tidur yang cukup','bersenam'],['gula-gula sahaja','tidur lewat malam','duduk sepanjang hari'],'Fikir tabiat yang baik untuk badan.'],
+  ['Ciri mana yang TIDAK diwarisi daripada ibu bapa?',['parut di lutut','baju kegemaran'],['warna rambut','bentuk hidung','warna mata'],'Ciri warisan ada sejak lahir.'],
+  ['Apabila kita membesar, baju lama menjadi ___.',['sempit'],['longgar','panjang'],'Badan kita bertambah besar.'],
+  ['Ciri mana yang sama seperti ibu bapa?',['warna kulit','bentuk muka'],['nama sekolah','baju yang dipakai'],'Ciri warisan diwarisi sejak lahir.']
+);
 G.s8Human=function(){
   if(Math.random()<0.4){var b=ri(1,3);
     return {key:'gr'+b,prompt:'Susun peringkat tumbesaran manusia. Apa yang hilang?',visual:flow(GROW,b),opts:shuffle(uniq3(GROW[b],shuffle(GROW.filter(function(x,i){return i!==b;})))).map(txtOpt),optsCls:'one',ans:GROW[b],
@@ -1624,24 +1641,32 @@ G.s8Repro=function(){
     opts:ch.map(function(x){return picOpt(x,ic(x),nm(x));}),ans:ans,
     hints:['Haiwan yang beranak biasanya menyusukan anaknya.',cap(nm(ans))+' '+(egg?'bertelur.':'beranak.')],good:'Betul! '+cap(nm(ans))+(egg?' bertelur.':' beranak.')};
 };
-var CYCLE={katak:['telur','berudu','anak katak','katak'],'rama-rama':['telur','ulat','pupa','rama-rama'],ayam:['telur','anak ayam','ayam']};
+var CYCLE={katak:['telur','berudu','anak katak','katak'],'rama-rama':['telur','ulat','pupa','rama-rama'],ayam:['telur','anak ayam','ayam'],itik:['telur','anak itik','itik'],ikan:['telur','anak ikan','ikan']};
+var CYCLEQ=[['Telur katak menetas menjadi ___.','berudu',['ulat','anak ayam'],'Berudu hidup dalam air.'],['Telur rama-rama menetas menjadi ___.','ulat',['berudu','anak ikan'],'Haiwan ini suka makan daun.'],['Ulat berubah menjadi ___ sebelum menjadi rama-rama.','pupa',['berudu','telur'],'Peringkat ini ada kepompong.'],['Berudu membesar menjadi ___.','katak',['ulat','ikan'],'Berudu ialah anak katak.'],['Telur ayam menetas menjadi ___.','anak ayam',['berudu','ulat'],'Anak ayam ada bulu halus.'],['Telur itik menetas menjadi ___.','anak itik',['berudu','ulat'],'Anak itik pandai berenang.']];
 G.s8Cycle=function(){
   if(Math.random()<0.3){
     return tq('ul','Anak haiwan mana TIDAK serupa dengan induknya?',pick(['berudu','ulat']),['anak kucing','anak lembu','anak itik'],
       'Fikir haiwan yang bentuknya berubah semasa membesar.','Berudu (katak) dan ulat (rama-rama) tidak serupa induknya.');
   }
+  if(Math.random()<0.25){var cq=pick(CYCLEQ);return tq('cq',cq[0],cq[1],cq[2],cq[3]);}
   var k=pick(Object.keys(CYCLE)),c=CYCLE[k],b=ri(1,c.length-1),all=[].concat(CYCLE.katak,CYCLE['rama-rama'],CYCLE.ayam).filter(function(x){return c.indexOf(x)<0;});
   return {key:'cy'+k+b,prompt:'Kitar hidup '+k+'. Peringkat apa yang hilang?',visual:flow(c,b),opts:shuffle(uniq3(c[b],shuffle(all))).map(txtOpt),ans:c[b],
     hints:['Baca peringkat sebelum dan selepas tanda soal.','Kitar hidup '+k+': '+c.join(', ')+'.'],good:'Betul! '+cap(c[b])+'.'};
 };
 var PLANT8=[
+  ['Biji benih yang dapat air akan ___.',['bercambah'],['mengering','mencair'],'Air membantu biji benih tumbuh.'],
+  ['Tumbuhan tanpa air akan ___.',['layu'],['berbunga','bercambah'],'Pokok yang kering menjadi lemah.'],
+  ['Biji benih bercambah menjadi ___.',['anak pokok'],['batu','pasir'],'Biji benih ialah permulaan pokok.'],
+  ['Pokok tumbuh daripada ___.',['biji benih'],['batu','pasir'],'Kita tanam benda kecil ini dalam tanah.'],
+  ['Biji mana yang boleh kita tanam?',['biji kacang','biji jagung','biji cili'],['batu kecil','manik','kerikil'],'Pilih benda yang hidup.'],
+  ['Selepas akar, apa yang tumbuh ke atas semasa biji benih bercambah?',['pucuk'],['batu','telur'],'Bahagian ini akan menjadi batang dan daun.'],
   ['Biji benih perlukan ___ untuk bercambah.',['air','udara','suhu yang sesuai'],['gula','garam','pasir'],'Biji benih bercambah dengan air, udara dan suhu yang sesuai.'],
   ['Tumbuhan perlukan ___ untuk tumbuh dengan baik.',['cahaya matahari','air','udara'],['gula','minyak','garam'],'Tumbuhan perlukan air, udara dan cahaya matahari.'],
   ['Biji benih dalam bekas kering tidak bercambah kerana tiada ___.',['air'],['cahaya','bunyi'],'Kapas dalam bekas itu kering.'],
   ['Apakah yang keluar dahulu semasa biji benih bercambah?',['akar'],['bunga','buah'],'Bahagian ini tumbuh ke bawah ke dalam tanah.']
 ];
 G.s8Plant=function(){var f=pick(PLANT8);return tq('pl8',f[0],pick(f[1]),f[2],f[3]);};
-var LIGHT_YES=['matahari','lampu suluh','lilin yang menyala','api'],LIGHT_NO=['bulan','cermin','buku','meja'];
+var LIGHT_YES=['matahari','lampu suluh','lilin yang menyala','api','bintang','lampu jalan','kunang-kunang'],LIGHT_NO=['bulan','cermin','buku','meja','kasut','batu'];
 G.s8Light=function(){
   var r=Math.random();
   if(r<0.45){var a=pick(LIGHT_YES);return tq('ly','Yang mana sumber cahaya?',a,LIGHT_NO,'Sumber cahaya mengeluarkan cahaya sendiri.',cap(a)+' mengeluarkan cahaya sendiri.');}
@@ -1715,7 +1740,7 @@ var EARTH8=[
   ['Air mengalir dari tempat yang ___ ke tempat yang rendah.','tinggi',['rendah','sejuk']],
   ['Udara yang bergerak dipanggil ___.','angin',['awan','hujan']],
   ['Angin membantu kita untuk ___.','mengeringkan baju',['memasak nasi','membaca buku']],
-  ['Mainan mana bergerak menggunakan angin?','layang-layang',['kereta kawalan jauh','basikal']],
+  ['Mainan mana boleh bergerak kerana angin?','layang-layang',['kereta kawalan jauh','basikal']],
   ['Belon mengembang apabila ditiup. Ini menunjukkan ___ ada di sekeliling kita.','udara',['air','cahaya']]
 ];
 G.s8Earth=function(){
@@ -1768,7 +1793,7 @@ G.e8Opp=function(){
   return {key:'op'+w+s.opts.map(function(o){return o.v;}).join(''),prompt:'Apakah lawan kata bagi "'+w+'"?',visual:'<div class="wordshow">'+w+'</div>',opts:s.opts,ans:ans,
     hints:['Lawan kata bermaksud yang bertentangan.','Lawan bagi "'+w+'" ialah "'+ans+'".'],good:'Betul! '+w+' ↔ '+ans+'.'};
 };
-var CAN=[['fish','a-ikan','swim',['fly','climb']],['bird','a-burung','fly',['read','cook']],['frog','a-katak','jump',['fly','read']],['cat','a-kucing','climb',['fly','read']],['butterfly','a-rama','fly',['swim','read']],['cow','a-lembu','walk',['fly','read']],['duck','a-itik','swim',['read','cook']],['hen','a-ayam','walk',['swim','read']],['frog','a-katak','swim',['fly','read']],['bird','a-burung','sing',['swim','read']],['cat','a-kucing','run',['fly','read']]];
+var CAN=[['fish','a-ikan','swim',['fly','climb']],['bird','a-burung','fly',['read','cook']],['frog','a-katak','jump',['fly','read']],['cat','a-kucing','climb',['fly','read']],['butterfly','a-rama','fly',['swim','read']],['cow','a-lembu','walk',['fly','read']],['duck','a-itik','swim',['read','cook']],['hen','a-ayam','lay eggs',['swim','read']],['hen','a-ayam','walk',['swim','read']],['frog','a-katak','swim',['fly','read']],['bird','a-burung','sing',['swim','read']],['cat','a-kucing','run',['fly','read']]];
 G.e8Can=function(){
   var o=pick(CAN),s=txtSet(o[2],o[3]);
   return {key:'cn'+o[0]+s.opts.map(function(x){return x.v;}).join(''),prompt:'Lengkapkan ayat ini.',visual:bigpic(o[1])+'<div class="sent">A '+o[0]+' can <span class="gap"></span>.</div>',
@@ -1804,13 +1829,109 @@ G.e8Read=function(){
   return {key:'rd'+text+q[0],prompt:'Baca cerita. Jawab soalan.',visual:'<div class="passage">'+text+'</div><div class="qline">'+q[0]+'</div>',opts:ch.map(txtOpt),ans:q[1],
     hints:['Baca cerita sekali lagi, ayat demi ayat.','Jawapannya ada dalam cerita: "'+q[1]+'".'],good:'Betul! '+q[1]+'.'};
 };
-var BE=[['I ___ happy.','am'],['The cat ___ sleeping.','is'],['The cats ___ sleeping.','are'],['We ___ friends.','are'],['She ___ my sister.','is'],['They ___ in the class.','are'],['He ___ tall.','is'],['The apples ___ red.','are'],['The apple ___ red.','is'],['You ___ my friend.','are'],['I ___ eight years old.','am']];
+var BE=[['My dad ___ at home.','is'],['The boys ___ happy.','are'],['It ___ a big dog.','is'],['I ___ eight years old.','am'],['You ___ kind.','are'],['The sun ___ hot.','is'],['My friends ___ here.','are'],['She ___ a good girl.','is'],['We ___ in the garden.','are'],['I ___ a student.','am'],['I ___ happy.','am'],['The cat ___ sleeping.','is'],['The cats ___ sleeping.','are'],['We ___ friends.','are'],['She ___ my sister.','is'],['They ___ in the class.','are'],['He ___ tall.','is'],['The apples ___ red.','are'],['The apple ___ red.','is'],['You ___ my friend.','are'],['I ___ eight years old.','am']];
 G.e8Be=function(){
   var o=pick(BE);
   return {key:'be'+o[0],prompt:'Pilih perkataan yang betul.',visual:'<div class="sent" style="font-size:26px">'+o[0].replace('___','<span class="gap"></span>')+'</div>',opts:shuffle(['am','is','are']).map(txtOpt),ans:o[1],
     hints:['I → am. He, she, it, satu benda → is. We, you, they, banyak benda → are.','Jawapannya "'+o[1]+'".'],good:'Betul! '+o[0].replace('___',o[1])};
 };
 G.e8Mix=function(){return pick([G.e8Dig,G.e8Plural,G.e8Prep,G.e8Opp,G.e8Can,G.e8Qw,G.e8Cal,G.e8Read,G.e8Be])();};
+
+/* ---- v5.3: ragam soalan tambahan supaya tidak berulang ---- */
+(function(){
+  function hexOf(w){return COLS.filter(function(x){return x.w===w;})[0].hex;}
+  var oColour=G.eColour;
+  G.eColour=function(){
+    if(Math.random()<0.5)return oColour();
+    var c=pick(COLS),ch=three(c.w,COLS.filter(function(x){return x.w!==c.w;}).map(function(x){return x.w;}));
+    return {key:'cb'+c.w+ch.join(''),prompt:'Tap warna "'+c.w+'".',visual:'',optsCls:'',
+      opts:ch.map(function(w){return {v:w,cls:'picopt',html:'<div class="swatch" style="background:'+hexOf(w)+';width:56px;height:56px"></div>'};}),ans:c.w,
+      hints:['"'+c.w+'" ialah warna '+c.ms+'. Ingat warna '+c.ex+'.','Cari warna '+c.ms+'.'],good:'Betul! '+cap(c.w)+' ialah warna '+c.ms+'.'};
+  };
+  var oNum=G.eNum;
+  G.eNum=function(){
+    if(Math.random()<0.5)return oNum();
+    var n=ri(1,10);
+    return {key:'ne'+n,prompt:'Tap nombor untuk "'+EN[n]+'".',visual:'',opts:numOpts(n,1,10).map(numBtn),ans:n,
+      hints:['"'+EN[n]+'" ialah nombor yang kita sebut dalam English.','"'+EN[n]+'" ialah '+n+'.'],good:'Betul! "'+EN[n]+'" ialah '+n+'.'};
+  };
+  var oShape=G.eShape;
+  G.eShape=function(){
+    if(Math.random()<0.5)return oShape();
+    var s=pick(SHAPES),others=shuffle(SHAPES.filter(function(x){return x.w!==s.w;})).slice(0,2),ch=shuffle([s].concat(others));
+    return {key:'sb'+s.w+ch.map(function(x){return x.w;}).join(''),prompt:'Tap bentuk "'+s.w+'".',visual:'',optsCls:'',
+      opts:ch.map(function(x,i){return {v:x.w,cls:'picopt',html:'<svg viewBox="0 0 48 48" width="64" height="64" aria-hidden="true" class="sh'+(i%4)+'">'+x.svg+'</svg>'};}),ans:s.w,
+      hints:[s.h,'"'+s.w+'" ialah '+s.ms+'.'],good:'Betul! '+cap(s.w)+' ialah '+s.ms+'.'};
+  };
+  var oCoin=G.coinId;
+  G.coinId=function(i){
+    var m=i%4;
+    if(m<2)return oCoin(i);
+    if(m===2){
+      if(Math.random()<0.5){
+        var v=pick(COINS),ch=shuffle([v].concat(shuffle(COINS.filter(function(c){return c!==v;})).slice(0,2)));
+        return {key:'cv'+v+ch.join(''),prompt:'Syiling ini bernilai berapa sen?',visual:'<div class="itemrow">'+coinHTML(v)+'</div>',
+          opts:ch.map(function(c){return {v:c,cls:'big',html:'<b>'+c+'</b>'};}),ans:v,
+          hints:['Lihat nombor besar pada syiling.','Syiling ini bernilai '+v+' sen.'],good:'Betul! '+v+' sen.'};
+      }
+      var p=shuffle(COINS).slice(0,2),mn=Math.min(p[0],p[1]),mx=Math.max(p[0],p[1]);
+      return {key:'bk'+p.join('-'),prompt:'Syiling mana yang nilainya lebih kecil?',visual:'',optsCls:'two',
+        opts:p.map(function(c){return {v:c,cls:'coinopt',html:coinHTML(c)};}),ans:mn,
+        hints:['Bandingkan nombor pada syiling.',mn+' sen lebih kecil daripada '+mx+' sen.'],good:'Betul! '+mn+' sen lebih kecil daripada '+mx+' sen.'};
+    }
+    var pairs=[];COINS.forEach(function(a){COINS.forEach(function(b){if(a<=b&&a+b<=70)pairs.push([a,b]);});});
+    var pr=pick(pairs),t=pr[0]+pr[1],opts=shuffle([t].concat(shuffle([t+5,t-5,t+10,t-10,t+20].filter(function(x){return x>0&&x!==t;})).slice(0,2)));
+    return {key:'cs'+pr.join('-'),prompt:'Berapa jumlah dua syiling ini?',visual:'<div class="itemrow">'+coinHTML(pr[0])+'<span class="op">+</span>'+coinHTML(pr[1])+'</div>',
+      opts:opts.map(function(c){return {v:c,cls:'big',html:'<b>'+c+' sen</b>'};}),ans:t,
+      hints:['Kira dari syiling yang lebih besar: '+pr[1]+', kemudian tambah '+pr[0]+'.',pr[0]+' + '+pr[1]+' = '+t+' sen.'],good:'Betul! '+pr[0]+' + '+pr[1]+' = '+t+' sen.'};
+  };
+  var oVowel=G.e7Vowel;
+  G.e7Vowel=function(){
+    var r=Math.random();
+    if(r<0.4)return oVowel();
+    var o=pick(CVC),first=r<0.7,L=first?o.w.charAt(0):o.w.charAt(2),w=o.w;
+    var shown=first?['?',w.charAt(1),w.charAt(2)]:[w.charAt(0),w.charAt(1),'?'];
+    var vis='<div class="bigpic">'+icon(o.icon)+'</div><div class="seq tiles">'+shown.map(function(c){return '<span class="st'+(c==='?'?' q':'')+'">'+c+'</span>';}).join('')+'</div>';
+    return {key:'vm'+w+first,prompt:'Huruf apa yang hilang di '+(first?'depan':'hujung')+' perkataan ini?',visual:vis,opts:letOpts(L,true).map(letBtn),ans:L,
+      hints:['Sebut nama gambar itu perlahan-lahan: '+w.split('').join(' - ')+'.','Huruf yang hilang ialah '+L+'.'],good:'Betul! '+w.split('').join('-')+'.'};
+  };
+  var oBlend=G.e7Blend;
+  G.e7Blend=function(){
+    if(Math.random()<0.5)return oBlend();
+    var o=pick(CVC),pool=CVC.filter(function(x){return x.w!==o.w;}).map(function(x){return x.w;}),ch=three(o.w,pool);
+    var vis='<div class="seq tiles">'+o.w.split('').map(function(c){return '<span class="st">'+c+'</span>';}).join('')+'</div>';
+    return {key:'bw'+o.w+ch.join(''),prompt:'Gabungkan huruf ini. Apakah perkataannya?',visual:vis,opts:ch.map(txtOpt),ans:o.w,
+      hints:['Sebut huruf itu satu demi satu, kemudian laju-lajukan.','Huruf itu membentuk "'+o.w+'".'],good:'Betul! '+o.w.split('').join(' + ')+' = '+o.w+'.'};
+  };
+  var oSpell=G.e7Spell;
+  G.e7Spell=function(){
+    if(Math.random()<0.5)return oSpell();
+    var o=pick(CVC),hy=function(x){return x.split('').join('-');},wr=shuffle(MISSP[o.w]).slice(0,2).map(hy),ch=shuffle([hy(o.w)].concat(wr));
+    return {key:'sh'+o.w+ch.join(''),prompt:'Eja nama gambar ini.',visual:bigpic(o.icon),opts:ch.map(txtOpt),ans:hy(o.w),
+      hints:['Sebut nama gambar itu dan dengar bunyi setiap huruf.','Ejaan yang betul ialah '+hy(o.w)+'.'],good:'Betul! '+hy(o.w)+'.'};
+  };
+  var oPrep=G.e8Prep;
+  G.e8Prep=function(){
+    var r=Math.random();
+    if(r<0.4)return oPrep();
+    var P=[['in','di dalam'],['on','di atas'],['under','di bawah'],['next to','di sebelah']],x=pick(P);
+    if(r<0.7){
+      var ch=shuffle(P.map(function(p){return p[1];}));
+      return {key:'pm'+x[0],prompt:'Apakah maksud "'+x[0]+'"?',visual:'<div class="wordshow">'+x[0]+'</div>',opts:ch.map(txtOpt),optsCls:'one',ans:x[1],
+        hints:['in = di dalam, on = di atas, under = di bawah, next to = di sebelah.','"'+x[0]+'" bermaksud '+x[1]+'.'],good:'Betul! '+x[0]+' = '+x[1]+'.'};
+    }
+    var ch2=shuffle(P.map(function(p){return p[0];}));
+    return {key:'pe'+x[0],prompt:'Mana satu "'+x[1]+'" dalam English?',visual:'<div class="wordshow">'+x[1]+'</div>',opts:ch2.map(txtOpt),optsCls:'one',ans:x[0],
+      hints:['in = di dalam, on = di atas, under = di bawah, next to = di sebelah.','"'+x[1]+'" ialah "'+x[0]+'" dalam English.'],good:'Betul! '+x[1]+' = '+x[0]+'.'};
+  };
+  var oCan=G.e8Can;
+  G.e8Can=function(){
+    if(Math.random()<0.5)return oCan();
+    var o=pick(CAN),vb=o[2],s=txtSet(vb,o[3]);
+    return {key:'cm'+o[0]+s.opts.map(function(x){return x.v;}).join(''),prompt:'Haiwan ini boleh buat apa?',visual:bigpic(o[1])+'<div class="wordshow">'+o[0]+'</div>',
+      opts:s.opts,ans:vb,hints:['Fikir apa yang haiwan ini selalu buat.','A '+o[0]+' can '+vb+'.'],good:'Betul! A '+o[0]+' can '+vb+'.'};
+  };
+})();
 
 var LEVELS = {
   '8:enjin':[
@@ -2211,7 +2332,7 @@ function vPlayers(){
   var empty=!DB.players.length;
   return '<section class="screen" aria-label="Pilih pemain">'+
     '<div class="top"><div class="grow brand">Pengembaraan <b>Si Cilik!</b>'+(UJI?'<span class="uji">Mod uji</span>':'')+'</div>'+muteBtn()+'</div>'+
-    '<div class="hello">'+kancilSVG()+'<div><h1>'+(empty?'Hai! Siapa nama kau?':'Siapa nak main?')+'</h1><p>'+(empty?'Tambah pemain pertama untuk mula.':'Tap nama kau untuk mula.')+'</p></div></div>'+
+    '<div class="hello">'+kancilSVG()+'<div><h1>'+(empty?'Hai! Siapa nama awak?':'Siapa nak main?')+'</h1><p>'+(empty?'Tambah kawan pertama untuk mula.':'Tekan nama awak untuk mula.')+'</p></div></div>'+
     '<div class="players">'+cards+'</div>'+
     (DB.players.length?'<div class="manage-row"><button class="linkbtn" type="button" data-act="manage">'+(S.manage?'Siap':'Urus pemain')+'</button></div>':'')+
     '<div class="support"><p>Pengembaraan Si Cilik ini adalah <b>100% percuma</b>. Jika anda ingin menyokong developer, scan QR code yang tertera.</p>'+
@@ -2410,7 +2531,7 @@ function vPlay(){
 }
 function afterPlay(){
   var r=S.run,q=r.qs[r.i];S.locked=false;
-  say(r.i===0?'Tahap '+(S.lvl+1)+': '+r.title+'. Jom!':pick(['Kau boleh!','Teruskan!','Bagus, soalan seterusnya.','Fokus, kau hampir sampai.']));
+  say(r.i===0?'Tahap '+(S.lvl+1)+': '+r.title+'. Jom!':pick(['Awak boleh!','Teruskan!','Bagus, soalan seterusnya.','Fokus, awak hampir sampai.']));
   if(q.kind==='coins')renderHand();
 }
 function say(t){var n=document.getElementById('kSay');if(!n)return;n.textContent=t;n.classList.remove('in');void n.offsetWidth;n.classList.add('in');}
@@ -2418,7 +2539,7 @@ function kancilEl(){return document.querySelector('#kbtn .kancil');}
 function cashUI(c,mode,mini){return mode==='rm'?'<span class="note note-'+c+(mini?' mini':'')+'"><b>RM'+c+'</b></span>':coinHTML(c,mini);}
 function renderHand(){
   var r=S.run,q=r.qs[r.i],p=document.getElementById('pieces');if(!p)return;
-  p.innerHTML=r.given.length?r.given.map(function(c,i){return '<button class="cash" type="button" data-act="rmcoin" data-i="'+i+'" aria-label="Keluarkan '+c+'">'+cashUI(c,q.mode,true)+'</button>';}).join(''):'<span class="hint">Duit dalam tangan kau</span>';
+  p.innerHTML=r.given.length?r.given.map(function(c,i){return '<button class="cash" type="button" data-act="rmcoin" data-i="'+i+'" aria-label="Keluarkan '+c+'">'+cashUI(c,q.mode,true)+'</button>';}).join(''):'<span class="hint">Duit dalam tangan awak</span>';
   document.getElementById('handTot').textContent=q.mode==='rm'?'RM'+sumArr(r.given):sumArr(r.given)+' sen';
   document.getElementById('payBtn').disabled=!r.given.length;
 }
@@ -2452,7 +2573,7 @@ function finish(){
   var nowDone=zoneDone(p,S.zone),last=S.lvl===LEVELS_PER_ZONE-1,pass=s>=PASS;
   var zs=WORLDS[AGES[p.age].world].zones,zi=zs.indexOf(S.zone),nextZ=zs[zi+1];
   var title=s===3?'Hebat! Semua betul!':(s===2?'Bagus!':'Hampir!');
-  var sub=s===3?'Tiga bintang untuk '+esc(p.name)+'.':(s===2?'Tahap seterusnya dah terbuka. Cuba dapat 3 bintang nanti.':'Kau perlu sekurang-kurangnya 2 bintang untuk buka tahap seterusnya. Cuba lagi!');
+  var sub=s===3?'Tiga bintang untuk '+esc(p.name)+'.':(s===2?'Tahap seterusnya dah terbuka. Cuba dapat 3 bintang nanti.':'Awak perlu sekurang-kurangnya 2 bintang untuk buka tahap seterusnya. Cuba lagi!');
   if(s>=PASS&&prev<PASS&&!last)sub=s===3?'Tiga bintang! Tahap '+(S.lvl+2)+' dah terbuka.':sub;
   var unlock=(nowDone&&!wasDone&&nextZ)?'<p class="unlock">Zon baru terbuka: '+ZONES[nextZ].name+'!</p>':'';
   var btns='';
